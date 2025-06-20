@@ -1,0 +1,570 @@
+﻿/* style.css */
+
+/* Variables CSS para colores (Tema Gris Suave con Fecha/Hora en Negro) */
+:root {
+    --primary-color: #6200EE; /* Un púrpura vibrante, efectivo en fondos claros */
+    --secondary-color: #03DAC6; /* Turquesa para acentos */
+    --text-on-light: #333333; /* Texto oscuro para fondos claros */
+    --text-on-dark: #FFFFFF; /* Texto blanco puro para asegurar contraste en elementos oscuros o enfocado */
+    
+    --background-light-grey: #e0e0e0; /* Gris muy claro para el fondo principal */
+    --card-background: #ffffff; /* Blanco puro para la caja principal (más limpio) */
+    --box-background: #f0f0f0; /* Gris ligeramente más oscuro para la sección de búsqueda */
+    --border-light: #cccccc; /* Borde gris suave */
+    
+    /* Sombras ajustadas para un fondo más claro */
+    --box-shadow-focused: 
+        0 0.75rem 2rem rgba(0, 0, 0, 0.4), /* Sombra principal más suave en el enfoque */
+        0 0 0 8px rgba(98, 0, 238, 0.15); /* Halo del color primario (púrpura) más sutil */
+    
+    --spacing-unit: 1rem;
+    --border-radius: 0.5rem;
+
+    /* Colores de estado para mensajes (ajustados para el tema claro) */
+    --info-status-bg: #e6f7ff; /* Fondo para estado de información (ej. Entregado) */
+    --info-status-text: #1890ff; /* Texto para estado de información */
+    --success-bg: #f6ffed; /* Fondo para estado de éxito (ej. Terminado) */
+    --success-text: #52c41a; /* Texto para estado de éxito */
+    --warning-bg: #fffbe6; /* Fondo para estado de advertencia (ej. En proceso) */
+    --warning-text: #faad14; /* Texto para estado de advertencia */
+    --danger-bg: #fff0f6; /* Fondo para estado de peligro/error (ej. No encontrado) */
+    --danger-text: #f5222d; /* Texto para estado de peligro/error */
+    --info-bg: #e9e9e9; /* Fondo para mensajes info generales (ej. Ingrese RUC) */
+    --info-text: #555555; /* Texto para mensajes info generales */
+}
+
+/* Estilos Generales para el body */
+body {
+    font-family: 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;
+    line-height: 1.6;
+    margin: 0;
+    padding: 0;
+    background-color: var(--background-light-grey); /* Fondo gris claro principal */
+    color: var(--text-on-light); /* Texto oscuro por defecto */
+    /* Usamos flexbox para centrar el contenido principal y permitir el scroll */
+    display: flex;
+    flex-direction: column; /* Apila los elementos verticalmente */
+    min-height: 100vh; /* Ocupa al menos el 100% del alto de la ventana */
+    overflow-y: auto; /* Permite el scroll vertical si el contenido excede el alto */
+    position: relative; /* Necesario para posicionar correctamente los elementos absolutos/fijos */
+}
+
+/* Estilos de la barra de desplazamiento */
+body::-webkit-scrollbar {
+    width: 12px; /* Ancho de la barra para navegadores WebKit (Chrome, Safari) */
+}
+
+body::-webkit-scrollbar-track {
+    background: #f1f1f1; /* Riel de la barra de desplazamiento claro */
+    border-radius: 6px;
+}
+
+body::-webkit-scrollbar-thumb {
+    background-color: #888; /* Pulgar de la barra de desplazamiento gris oscuro */
+    border-radius: 6px;
+    border: 2px solid #f1f1f1; /* Borde para el pulgar */
+}
+
+body::-webkit-scrollbar-thumb:hover {
+    background-color: #555; /* Pulgar al pasar el ratón */
+}
+
+/* Contenedor para el contenido principal (la caja flotante) */
+.app-container {
+    background-color: var(--card-background); /* Blanco puro para la tarjeta */
+    border-radius: var(--border-radius);
+    max-width: 600px;
+    width: 90%;
+    padding: 2.5rem;
+    box-sizing: border-box;
+    z-index: 1;
+    text-align: center;
+    border: 1px solid var(--border-light); /* Borde más claro */
+    margin: 6.5rem auto 2rem auto; /* 6.5rem arriba, auto horizontalmente para centrar, 2rem abajo */
+    animation: float 3s ease-in-out infinite, dynamic-shadow-light 3s ease-in-out infinite; /* Animación de sombra para tema claro */
+    transition: box-shadow 0.3s ease-out, transform 0.3s ease-out, animation 0.3s ease-out;
+}
+
+
+/* Animación para el efecto flotante */
+@keyframes float {
+    0% { transform: translateY(0px); }
+    50% { transform: translateY(-10px); } /* Sube 10px */
+    100% { transform: translateY(0px); }
+}
+
+/* Animación de sombra dinámica para tema claro (sombra oscura más sutil) */
+@keyframes dynamic-shadow-light {
+    0% {
+        box-shadow: 
+            0 0.25rem 0.5rem rgba(0, 0, 0, 0.1); /* Sombra base muy suave */
+    }
+    50% {
+        box-shadow: 
+            0 1rem 2.5rem rgba(0, 0, 0, 0.25);   /* Sombra más pronunciada al subir */
+    }
+    100% {
+        box-shadow: 
+            0 0.25rem 0.5rem rgba(0, 0, 0, 0.1);
+    }
+}
+
+/* Estado de foco para la caja principal: pausa flotabilidad y sombra de profundidad */
+.app-container.focused {
+    animation: none; /* Pausa ambas animaciones */
+    transform: translateY(0px); /* Asegura que la caja esté en su posición base */
+    box-shadow: var(--box-shadow-focused); /* Aplica la sombra de profundidad con halo del color primario */
+}
+
+
+/* Estilos para la fecha y hora en las esquinas (Absolutas para posicionamiento, se mueven con scroll) */
+.top-info {
+    position: absolute; /* Vuelve a absolute */
+    font-weight: bold;
+    color: #121212; /* ¡Negro puro! */
+    text-shadow: 0 0 8px rgba(0, 0, 0, 0.8); /* Sombra de texto oscura para contraste */
+    letter-spacing: 0.05em;
+    font-size: clamp(1em, 2.8vw, 2.2em);
+    white-space: nowrap;
+    padding: 1.5rem 2rem;
+    z-index: 10; /* Z-index para que esté por encima de otros elementos, pero no tan alto como para un fixed */
+    box-sizing: border-box;
+    width: 100%; /* Ocupa todo el ancho */
+}
+
+.date-display {
+    top: 0;
+    left: 0;
+    text-align: left;
+    padding-right: 0.5rem;
+}
+
+.time-display {
+    top: 0;
+    right: 0;
+    text-align: right;
+    padding-left: 0.5rem;
+}
+
+/* Encabezado de la aplicación */
+.app-header {
+    border-bottom: 1px solid var(--border-light); /* Borde más claro */
+    padding-bottom: 1.5rem;
+    margin-bottom: 1.5rem;
+}
+
+.app-header h1 {
+    font-size: 2.2rem;
+    color: var(--primary-color);
+    margin: 0;
+    margin-bottom: 0.5rem;
+    letter-spacing: 0.02em;
+}
+
+.app-header p {
+    font-size: 1rem;
+    color: var(--text-on-light); /* Texto oscuro */
+    margin: 0;
+}
+
+/* Contenido Principal */
+.main-content {
+    margin-bottom: 2rem;
+}
+
+/* Caja de Consulta (search-section) - Color Diferencial */
+.search-section {
+    background-color: var(--box-background); /* Gris ligeramente más oscuro */
+    border: 1px solid var(--border-light);
+    border-radius: var(--border-radius);
+    padding: 1.5rem;
+    margin-bottom: var(--spacing-unit);
+    box-shadow: inset 0 0 5px rgba(0,0,0,0.1); /* Sombra interna más suave */
+}
+
+.input-label {
+    display: block;
+    margin-bottom: 0.75rem;
+    font-weight: 600;
+    color: var(--text-on-light);
+    font-size: 1rem;
+    text-align: left;
+}
+
+.cedula-input {
+    width: calc(100% - 1.5rem);
+    padding: 1rem;
+    margin-bottom: var(--spacing-unit);
+    border: 1px solid var(--border-light); /* Borde más claro */
+    border-radius: var(--border-radius);
+    font-size: 1rem;
+    box-sizing: border-box;
+    background-color: #ffffff; /* Fondo blanco del input */
+    color: var(--text-on-light); /* Texto oscuro */
+    transition: border-color 0.2s ease, box-shadow 0.2s ease, background-color 0.2s ease;
+}
+
+.cedula-input::placeholder {
+    color: #999; /* Placeholder más claro */
+}
+
+.cedula-input:focus {
+    border-color: var(--primary-color);
+    box-shadow: 0 0 0 0.2rem rgba(98, 0, 238, 0.2); /* Sombra de enfoque púrpura */
+    outline: none;
+    background-color: #f8f8f8; /* Ligeramente más oscuro al enfocar */
+}
+
+.button-group {
+    display: flex;
+    gap: 1rem;
+    justify-content: center;
+    flex-wrap: wrap;
+    margin-top: 1rem;
+}
+
+button {
+    padding: 0.9rem 1.5rem;
+    border: none;
+    border-radius: var(--border-radius);
+    cursor: pointer;
+    font-size: 1rem;
+    font-weight: 600;
+    transition: background-color 0.2s ease, transform 0.1s ease, box-shadow 0.2s ease;
+    flex-grow: 1;
+    max-width: 180px;
+}
+
+.primary-button {
+    background-color: var(--primary-color);
+    color: var(--text-on-dark); /* Texto blanco para asegurar contraste */
+}
+
+.primary-button:hover {
+    background-color: #7c4dff; /* Púrpura ligeramente más claro */
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(98, 0, 238, 0.2);
+}
+
+.secondary-button {
+    background-color: var(--border-light); /* Gris suave */
+    color: var(--text-on-light); /* Texto oscuro */
+}
+
+.secondary-button:hover {
+    background-color: #bbbbbb; /* Gris ligeramente más oscuro */
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+/* Resultados (Result Display) - MEJORADO para ser más profesional */
+.result-display {
+    margin-top: 2.5rem;
+    padding: 1.8rem;
+    border-radius: var(--border-radius);
+    overflow: hidden; /* Importante para transiciones de altura */
+    
+    /* Estilo inicial para el mensaje por defecto (cuando no hay resultados) */
+    min-height: 150px; /* Aumentado para el espacio del desplegable */
+    
+    /* Colores y bordes base */
+    background-color: var(--card-background); /* Fondo blanco limpio para la tarjeta de resultados */
+    border: 1px solid var(--border-light); /* Borde suave */
+    color: var(--text-on-light); /* Texto oscuro por defecto */
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1); /* Sombra sutil para darle profundidad */
+
+    /* Transiciones suaves para todos los cambios */
+    transition: all 0.5s ease-in-out; 
+    position: relative; /* Para posibles elementos internos posicionados */
+}
+
+/* Nueva clase para ocultar el resultado con transición (mejora la animación de ocultamiento) */
+.result-display.hidden { 
+    opacity: 0;
+    max-height: 0;
+    padding: 0 1.8rem; /* Colapsa el padding también */
+    margin-top: 0; /* Colapsa el margen superior */
+    border-color: transparent; /* Hace el borde transparente al ocultar */
+    box-shadow: none; /* Remueve la sombra */
+    pointer-events: none; /* Deshabilita interacciones */
+    visibility: hidden; /* Oculta completamente */
+}
+
+/* Clase para hacer visible el resultado y mostrar el contenido */
+.result-display.visible {
+    opacity: 1;
+    max-height: 500px; /* Suficiente altura para el select y la tarjeta. Ajusta si es más largo. */
+    padding: 1.8rem; /* Restaura el padding */
+    margin-top: 2.5rem; /* Restaura el margen */
+    border-color: var(--border-light); /* Restaura el borde */
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1); /* Restaura la sombra */
+    pointer-events: auto; /* Habilita interacciones */
+    visibility: visible; /* Hace visible */
+    
+    /* Para los mensajes individuales (ej. "Buscando...", "RUC no encontrado") */
+    /* Estas propiedades son anuladas si .multi-pedido-display está presente */
+    display: flex; 
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+}
+
+/* Cuando el resultado contiene un select y una tarjeta de pedido */
+.result-display.multi-pedido-display {
+    display: block; /* Vuelve a block para que el select y la tarjeta se apilen normalmente */
+    text-align: center; /* Centra el select y la tarjeta dentro del contenedor principal */
+    padding: 2rem; /* Puede necesitar un poco más de padding */
+}
+
+/* Estilo para cada línea de detalle en el resultado */
+.result-display .result-line {
+    width: 100%; /* Asegura que cada línea ocupe el ancho completo */
+    margin-bottom: 0.75rem; /* Espacio uniforme entre las líneas */
+    word-break: break-word; /* Rompe palabras largas */
+    font-size: 1.15rem; /* Un buen tamaño base para la información */
+    color: var(--text-on-light); /* Color de texto estándar */
+    padding-left: 0.5rem; /* Un pequeño sangrado para la info */
+    position: relative; /* Para posibles íconos o decoraciones */
+}
+
+.result-display .result-line:last-child {
+    margin-bottom: 0; /* Sin margen inferior en la última línea */
+    padding-bottom: 0.5rem; /* Pequeño padding extra al final si es necesario */
+}
+
+/* Estilo para las etiquetas fuertes (RUC:, Cliente:, Estado:) */
+.result-display .result-line strong {
+    color: var(--primary-color); /* Color primario para las etiquetas */
+    font-weight: 700; /* Más negrita */
+    margin-right: 0.5rem; /* Espacio entre la etiqueta y el valor */
+    font-size: 1.05em; /* Un poco más grande que el texto normal de la línea */
+}
+
+/* Estilo específico para la píldora de estado */
+.result-display .status-pill {
+    display: inline-block; /* Se ajusta al contenido */
+    padding: 0.3em 0.8em; /* Relleno para la píldora */
+    border-radius: 9999px; /* Borde muy redondeado para forma de píldora */
+    font-size: 1.1rem; /* Buen tamaño para el estado */
+    font-weight: 700; /* Negrita */
+    text-transform: uppercase; /* Todo en mayúsculas para más impacto */
+    letter-spacing: 0.05em; /* Espaciado entre letras */
+    margin-left: 0.5rem; /* Separación del texto "Estado:" */
+    /* Transiciones para cambios de color */
+    transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
+}
+
+/* Colores de las píldoras de estado */
+.result-display.success .status-pill {
+    background-color: var(--success-bg);
+    color: var(--success-text);
+    border: 1px solid var(--success-text);
+}
+.result-display.warning .status-pill {
+    background-color: var(--warning-bg);
+    color: var(--warning-text);
+    border: 1px solid var(--warning-text);
+}
+.result-display.info-status .status-pill { /* Para el estado 'entregado' */
+    background-color: var(--info-status-bg);
+    color: var(--info-status-text);
+    border: 1px solid var(--info-status-text);
+}
+/* Aunque 'info' y 'danger' no se usan como status-pill directamente aquí, es buena práctica tenerlos */
+.result-display.info .status-pill {
+    background-color: var(--info-bg);
+    color: var(--info-text);
+    border: 1px solid var(--info-text);
+}
+.result-display.danger .status-pill {
+    background-color: var(--danger-bg);
+    color: var(--danger-text);
+    border: 1px solid var(--danger-text);
+}
+
+
+/* Estilo para los mensajes de error/info/carga que no son el resultado final */
+.result-display p {
+    margin: 0;
+    font-size: 1.1rem; /* Tamaño para mensajes generales */
+    color: var(--text-on-light);
+}
+
+
+/* Animación de temblor */
+.result-display.shake {
+    animation: shake 0.5s;
+}
+
+@keyframes shake {
+    0%, 100% { transform: translateX(0); }
+    10%, 30%, 50%, 70%, 90% { transform: translateX(-8px); }
+    20%, 40%, 60%, 80% { transform: translateX(8px); }
+}
+
+/* Nuevos estilos para mostrar múltiples pedidos */
+.select-container {
+    width: 100%;
+    margin-bottom: 2rem; /* Espacio entre el select y la tarjeta de detalles */
+    /* Ajuste para centrar el label y el select de forma robusta */
+    display: flex; 
+    flex-direction: column;
+    align-items: center; /* Centra los elementos hijos horizontalmente */
+}
+
+/* Estilo del select desplegable */
+.select-container select.cedula-input {
+    appearance: none; /* Elimina estilos por defecto del navegador */
+    background-color: var(--card-background); /* Fondo blanco */
+    background-image: url('data:image/svg+xml;utf8,<svg fill="%23333333" height="24" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg"><path d="M7 10l5 5 5-5z"/></svg>'); /* Icono de flecha hacia abajo */
+    background-repeat: no-repeat;
+    background-position: calc(100% - 0.8rem) center; /* Posiciona la flecha desde el borde derecho */
+    background-size: 1.2rem;
+    border: 1px solid var(--border-light);
+    border-radius: var(--border-radius);
+    padding: 0.8rem 2.5rem 0.8rem 1rem; /* Ajustar padding para el icono de flecha. El 2.5rem es importante */
+    font-size: 1rem;
+    color: var(--text-on-light);
+    cursor: pointer;
+    box-sizing: border-box;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
+    
+    width: 100%; /* Ocupa el 100% del select-container */
+    max-width: 300px; /* Limita el ancho máximo para que no se extienda demasiado */
+    /* Los márgenes automáticos no son estrictamente necesarios con align-items: center en el padre flex */
+    /* margin-left: auto; */
+    /* margin-right: auto; */
+    /* display: block;  ya no es necesario con flex en padre */
+}
+
+.select-container select.cedula-input:focus {
+    border-color: var(--primary-color);
+    box-shadow: 0 0 0 0.2rem rgba(98, 0, 238, 0.2);
+    outline: none;
+}
+
+
+.pedido-card {
+    background-color: var(--card-background); /* Fondo blanco para cada tarjeta individual */
+    border: 1px solid var(--border-light); /* Borde sutil */
+    border-radius: var(--border-radius); /* Bordes redondeados */
+    padding: 1.2rem; /* Relleno interno de cada tarjeta */
+    width: 100%; /* Ocupa el ancho completo del contenedor flex */
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.08); /* Sombra más ligera para cada tarjeta */
+    transition: transform 0.2s ease, box-shadow 0.2s ease; /* Transición suave al pasar el ratón */
+    position: relative; /* Para posibles elementos de estado o iconografía */
+    overflow: hidden; /* Asegura que la sombra interna no se salga */
+    margin-left: auto; /* Centrar la tarjeta */
+    margin-right: auto; /* Centrar la tarjeta */
+    max-width: 450px; /* Limitar el ancho para que no se extienda demasiado */
+}
+
+.pedido-card:hover {
+    transform: translateY(-3px); /* Efecto de levitación al pasar el ratón */
+    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.15); /* Sombra más pronunciada al pasar el ratón */
+}
+
+/* Colores de borde y fondo basados en el estado para cada pedido-card */
+.pedido-card.success {
+    border-left: 5px solid var(--success-text); /* Borde lateral verde para éxito */
+}
+.pedido-card.warning {
+    border-left: 5px solid var(--warning-text); /* Borde lateral amarillo para advertencia */
+}
+.pedido-card.info-status {
+    border-left: 5px solid var(--info-status-text); /* Borde lateral azul para info (entregado) */
+}
+.pedido-card.danger {
+    border-left: 5px solid var(--danger-text); /* Borde lateral rojo para peligro/no encontrado */
+}
+
+/* Ajustes para las líneas de resultado dentro de cada pedido-card */
+.pedido-card .result-line {
+    font-size: 1rem; /* Un poco más pequeño para que quepa bien en la tarjeta */
+    margin-bottom: 0.6rem; /* Ajusta el espacio entre líneas */
+    text-align: left; /* Asegura que el texto interno de la tarjeta esté a la izquierda */
+    padding-left: 0; /* Quita el padding si se ve raro */
+}
+
+.pedido-card .result-line strong {
+    font-size: 1em; /* Mismo tamaño que el texto de la línea */
+}
+
+/* Ajustes para la píldora de estado dentro de cada pedido-card */
+.pedido-card .status-pill {
+    font-size: 0.95rem; /* Un poco más pequeño para la píldora */
+    padding: 0.25em 0.6em; /* Ajusta el padding de la píldora */
+}
+
+
+/* Pie de página */
+.app-footer {
+    position: static; /* Se desplaza con el contenido */
+    margin-top: 2rem; 
+    width: 100%;
+    text-align: center;
+    font-size: 0.85rem;
+    color: var(--text-on-light); /* Color de texto oscuro para el footer */
+    z-index: 5;
+    padding: 0 1rem;
+    box-sizing: border-box;
+}
+
+/* Responsividad */
+@media (max-width: 768px) {
+    .top-info {
+        padding: 1rem 1.5rem;
+    }
+    .app-container {
+        max-width: 90%;
+        padding: 2rem;
+        margin-top: 5.5rem; /* Ajuste del margen superior para pantallas medianas */
+    }
+    .app-header h1 {
+        font-size: 1.8rem;
+    }
+    .app-footer {
+        font-size: 0.8rem;
+        margin-bottom: 0.5rem;
+    }
+    .select-container select.cedula-input {
+        max-width: 90%; /* Ajuste para móviles */
+    }
+}
+
+@media (max-width: 480px) {
+    .top-info {
+        font-size: clamp(0.9em, 4vw, 1.5em);
+        padding: 0.8rem 1rem;
+    }
+    .app-container {
+        margin-top: 4.5rem; /* Ajuste del margen superior para pantallas pequeñas */
+        margin-bottom: 1rem;
+        padding: 1.5rem;
+    }
+    .app-header h1 {
+        font-size: 1.5rem;
+    }
+    .button-group {
+        flex-direction: column;
+        gap: 0.5rem;
+    }
+    button {
+        width: 100%;
+        max-width: none;
+    }
+    .search-section {
+        padding: 1rem;
+    }
+    .result-display {
+        padding: 1.2rem;
+    }
+    .app-footer {
+        margin-top: 1rem;
+        font-size: 0.75rem;
+    }
+    .select-container select.cedula-input {
+        max-width: 100%;
+    }
+}

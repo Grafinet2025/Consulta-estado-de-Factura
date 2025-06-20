@@ -1,0 +1,40 @@
+﻿<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Consulta de Documentos - Sistema Avanzado</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div id="top-left-date" class="top-info date-display"></div>
+    <div id="top-right-time" class="top-info time-display"></div>
+
+    <div class="app-container">
+        <header class="app-header">
+            <h1>Sistema para consulta de Estado de su Factura</h1>
+            <p>Verifique el estado de sus facturas fácilmente.</p>
+        </header>	
+
+        <main class="main-content">
+            <div class="search-section">
+                <label for="rucInput" class="input-label">Ingrese su Número de C.I o R.U.C sin Guión:</label>
+                <input type="text" id="rucInput" placeholder="Ej: 80012345" maxlength="15" class="cedula-input">
+                <div class="button-group">
+                    <button id="buscarBtn" class="primary-button">Consultar</button>
+                    <button id="limpiarBtn" class="secondary-button">Limpiar</button>
+                </div>
+            </div>
+            <div id="resultado" class="result-display">
+                <p>Utilice el campo de arriba para saber el estado de su Factura.</p>
+            </div>
+        </main>
+    </div>
+
+    <footer class="app-footer">
+        <p>&copy; 2025 Sistema de Consulta de Documentos. Grafinet Todos los derechos reservados.</p>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+</html>
