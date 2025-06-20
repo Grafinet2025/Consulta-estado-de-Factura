@@ -5,7 +5,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // --- CONFIGURACIÓN ---
     // ⚠️ MUY IMPORTANTE: REEMPLAZA ESTA URL con la "URL de la API de ejecución" de tu API de Apps Script
-    const GOOGLE_APPS_SCRIPT_API_URL = 'https://script.google.com/macros/s/AKfycbwVqb0Rkv2yghOpJQFsqoBmAyvpkItGbJrwNP6IfQxfi5Kkdmzv08402j2DAUduns-1/exec'; // ¡VERIFICA QUE ESTA SEA LA URL CORRECTA DE TU DESPLIEGUE!
+    const GOOGLE_APPS_SCRIPT_API_URL = 'https://script.google.com/macros/s/AKfycby8C8LJNfv9yxCQDpfIi46eYpTL8_d5soSeNnERid5T0gjAE6OOxTbSNB3qwvnQiYDn/exec'; // ¡VERIFICA QUE ESTA SEA LA URL CORRECTA DE TU DESPLIEGUE!
 
     // --- ELEMENTOS DEL DOM ---
     const rucInput = document.getElementById('rucInput'); // Referencia al input del RUC
